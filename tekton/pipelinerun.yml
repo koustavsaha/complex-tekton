@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: fibonacci-calculator
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  resources:
+    - name: git-source
+      resourceRef:
+        name: picalc-git
+  params:
+    - name: pathToContextClient
+      value: client
+    - name: pathToDockerFile
+      value: Dockerfile
+    - name: pathToYamlFile
+      value: "k8s/"
+    - name: imageUrlClient
+      value: koustavs18/multi-client
+    - name: imageTag
+      value: "v3.0"
+    - name: pathToContextServer
+      value: server
+    - name: imageUrlServer
+      value: koustavs18/multi-server
+    - name: pathToContextWorker
+      value: worker
+    - name: imageUrlWorker
+      value: koustavs18/multi-worker
+  serviceAccountName: pipeline-account
